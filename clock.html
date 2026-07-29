@@ -53,6 +53,55 @@
         updateClock();
       </script>
 
-    </a-scene>
+    <a-scene
+  xr-mode-ui="enabled: true"
+  webxr="optionalFeatures: hit-test; requiredFeatures: local-floor"
+  vr-mode-ui="enabled: false"
+
+<a-scene
+  xr-mode-ui="enabled: true"
+  webxr="optionalFeatures: hit-test; requiredFeatures: local-floor"
+  vr-mode-ui="enabled: false"
+>
+
+  <!-- your clock entities here -->
+
+  <!-- your updateClock script here -->
+
+  <!-- ADD THIS PINCH-SCALE SCRIPT BELOW -->
+  <script>
+    AFRAME.registerComponent('pinch-scale', {
+      init: function () {
+        const el = this.el;
+        let initialDistance = null;
+        let initialScale = el.object3D.scale.clone();
+
+        this.el.sceneEl.addEventListener('touchmove', (evt) => {
+          if (evt.touches.length === 2) {
+            const dx = evt.touches[0].pageX - evt.touches[1].pageX;
+            const dy = evt.touches[0].pageY - evt.touches[1].pageY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (!initialDistance) {
+              initialDistance = distance;
+              initialScale = el.object3D.scale.clone();
+            }
+
+            const scaleFactor = distance / initialDistance;
+            el.object3D.scale.set(
+              initialScale.x * scaleFactor,
+              initialScale.y * scaleFactor,
+              initialScale.z * scaleFactor
+            );
+          }
+        });
+      }
+    });
+  </script>
+
+</a-scene>
+
+>
+
   </body>
 </html>
