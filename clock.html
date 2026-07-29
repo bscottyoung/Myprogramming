@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Floating XR Clock</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  </head>
+
+  <body>
+    <a-scene xr-mode-ui="enabled: true">
+
+      <!-- CAMERA -->
+      <a-entity camera look-controls position="0 1.6 0"></a-entity>
+
+      <!-- CLOCK GROUP -->
+      <a-entity id="clock" position="0 1.5 -1">
+
+        <!-- TIME (EDGE-TO-EDGE) -->
+        <a-text
+          id="timeText"
+          value="12:45"
+          color="#FFFFFF"
+          align="center"
+          width="3.5"
+          position="0 0 0"
+          shader="msdf"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+
+        <!-- BATTERY -->
+        <a-text
+          id="batteryText"
+          value="Battery: 78%"
+          color="#FFFFFF"
+          align="center"
+          width="1.5"
+          position="0 -0.4 0"
+          shader="msdf"
+          font="https://cdn.aframe.io/fonts/Roboto-msdf.json">
+        </a-text>
+
+      </a-entity>
+
+      <!-- SCRIPT TO UPDATE TIME -->
+      <script>
+        function updateClock() {
+          const now = new Date();
+          const hours = now.getHours().toString().padStart(2, '0');
+          const minutes = now.getMinutes().toString().padStart(2, '0');
+          document.querySelector('#timeText').setAttribute('value', `${hours}:${minutes}`);
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+      </script>
+
+    </a-scene>
+  </body>
+</html>
